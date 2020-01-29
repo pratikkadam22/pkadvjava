@@ -9,8 +9,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
+/**
+ * This is the class that implements the AirlineDumper interface
+ */
 public class TextDumper implements AirlineDumper {
     String filename;
+
+    /**
+     * This method dumps the airline with its associated flights into a text file
+     * @param abstractAirline The object of the class AbstractAirline to dump in text file
+     */
     @Override
     public void dump(AbstractAirline abstractAirline) throws IOException {
         ArrayList arrli = (ArrayList) abstractAirline.getFlights();
@@ -28,6 +36,10 @@ public class TextDumper implements AirlineDumper {
         out.close();
     }
 
+    /**
+     * This method sets the class variable "filename" which is later used in the dump method
+     * @param filename
+     */
     public void setFilename(String filename) {
         this.filename = filename;
     }

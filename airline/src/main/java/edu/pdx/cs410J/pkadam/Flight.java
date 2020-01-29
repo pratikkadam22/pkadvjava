@@ -14,7 +14,6 @@ public class Flight extends AbstractFlight {
     /**
      * This method sets the flightnumber for the Flight
      * @param number the number for the flight parsed from command line
-     * @throws an exception when the number is non-numeric
      */
   public void setFlightnum(String number) {
       int num = 0;

@@ -13,13 +13,26 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * This is the class that implements the AirlineParser interface
+ */
 public class TextParser implements AirlineParser {
     String filename, airlinename;
+
+    /**
+     * This method sets the class variables to be used in the parse() method
+     * @param fname the name of the text file to parse
+     * @param aname the name of the airline passed in the command line
+     */
     public void setnames(String fname, String aname) {
         this.filename = fname;
         this.airlinename = aname;
     }
 
+    /**
+     * This method parses the text file and creates the airline with its associated flights
+     * @return the Airline object created from the details in the text file
+     */
     @Override
     public AbstractAirline parse() throws ParserException {
         Scanner sc = null;
@@ -56,7 +69,6 @@ public class TextParser implements AirlineParser {
                     }
                     out.write(this.airlinename);
                     out.close();
-                    //System.exit(1);
                 } else {
                     File folder = new File(v);
                     if (folder.mkdir()) {
@@ -67,7 +79,6 @@ public class TextParser implements AirlineParser {
                         }
                         out.write(this.airlinename);
                         out.close();
-                        //System.exit(1);
                     } else {
                         System.out.println("Could not create directory");
                         System.exit(1);
@@ -114,10 +125,13 @@ public class TextParser implements AirlineParser {
             System.err.println("The airline name is different than in the file");
             System.exit(1);
         }
-
         return airline;
     }
 
+    /**
+     * This method checks whether the flightnumbers in the text file are correct or not
+     * @param number the flightnumber of a flight
+     */
     public static void checkFlightnum(String number) {
         int num = 0;
         try {
@@ -139,6 +153,10 @@ public class TextParser implements AirlineParser {
         }
     }
 
+    /**
+     * This method checks whether the airport codes in the text file are correct or not
+     * @param source the airport code of a source or a destination
+     */
     public static void checkairportcode(String source) {
         String codex = "[a-zA-Z]{3}";
         Pattern pattern = Pattern.compile(codex);
@@ -152,6 +170,11 @@ public class TextParser implements AirlineParser {
         }
     }
 
+    /**
+     * This method checks whether the dates and times in the text file are correct or not
+     * @param date the departure or arrival date of a flight
+     * @param time the departure or arrival time of a flight
+     */
     public static void checkdatetime(String date, String time) {
         String dateregex = "^(1[0-2]|0[1-9]|[1-9])/(3[01]|[12][0-9]|0[1-9]|[1-9])/[0-9]{4}$";
         Pattern pattern1 = Pattern.compile(dateregex);
