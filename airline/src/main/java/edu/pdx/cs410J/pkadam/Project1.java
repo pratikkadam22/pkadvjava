@@ -23,7 +23,7 @@ public class Project1 {
     }
 
     //This is the case when -README is included
-    if (args[0].equals("-README") || args[1].equals("-README") || args[2].equals("-README")) {
+    if (args[0].equals("-README") || args[1].equals("-README") || args[2].equals("-README") || args[3].equals("-README")) {
       readmeinfo();
     }
 
@@ -42,15 +42,13 @@ public class Project1 {
             System.exit(1);
           }
         }
-        //for(int j = 0; j < 1; j++){
-          int k;
-          String first;
-          first = args[0];
-          for(k = 0; k < args.length-1; k++){
-            args[k] = args[k+1];
-          }
-          args[k] = first;
-        //}
+        int k;
+        String first;
+        first = args[0];
+        for(k = 0; k < args.length-1; k++){
+          args[k] = args[k+1];
+        }
+        args[k] = first;
         Object[] objs = compute(args);
         System.out.println(objs[1].toString());
         System.exit(0);
@@ -98,9 +96,7 @@ public class Project1 {
         parser.setnames(args[9], args[0]);
         AbstractAirline parsedairline = parser.parse();
         parsedairline.addFlight((AbstractFlight) objs[1]);
-        System.out.println(parsedairline.getName());
         dumper.dump(parsedairline);
-        System.out.println(objs[1].toString());
         System.exit(0);
       }
       else {
@@ -136,7 +132,6 @@ public class Project1 {
         }
         AbstractAirline parsedairline = parser.parse();
         parsedairline.addFlight((AbstractFlight) objs[1]);
-        System.out.println(parsedairline.getName());
         dumper.dump(parsedairline);
         System.out.println(objs[1].toString());
         System.exit(0);

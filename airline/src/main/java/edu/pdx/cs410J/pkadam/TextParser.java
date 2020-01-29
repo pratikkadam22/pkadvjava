@@ -26,15 +26,54 @@ public class TextParser implements AirlineParser {
         try {
             sc = new Scanner(new File(this.filename));
         } catch (FileNotFoundException e) {
-            System.out.println("File with given name does not exist. New file created.");
-            PrintWriter out = null;
-            try {
-                out = new PrintWriter(this.filename);
-            } catch (FileNotFoundException ex) {
-                System.out.println("File is not present.");
+            System.out.println("File with given name does not exist. File created.");
+            if(!this.filename.contains("/")){
+                PrintWriter out = null;
+                try {
+                    out = new PrintWriter(this.filename);
+                } catch (FileNotFoundException ex) {
+                    System.out.println("File is not present.");
+                }
+                out.write(this.airlinename);
+                out.close();
             }
-            out.write(this.airlinename);
-            out.close();
+            else {
+                PrintWriter out = null;
+                File f = null;
+                File f1 = null;
+                String v;
+                boolean bool = false;
+                f = new File(this.filename);
+                f1 = f.getParentFile();
+                v = f1.getAbsolutePath();
+                bool = f1.exists();
+                //check if directory exists or not
+                if (bool) {
+                    try {
+                        out = new PrintWriter(this.filename);
+                    } catch (FileNotFoundException ex) {
+                        ex.printStackTrace();
+                    }
+                    out.write(this.airlinename);
+                    out.close();
+                    //System.exit(1);
+                } else {
+                    File folder = new File(v);
+                    if (folder.mkdir()) {
+                        try {
+                            out = new PrintWriter(this.filename);
+                        } catch (FileNotFoundException ex) {
+                            ex.printStackTrace();
+                        }
+                        out.write(this.airlinename);
+                        out.close();
+                        //System.exit(1);
+                    } else {
+                        System.out.println("Could not create directory");
+                        System.exit(1);
+                    }
+                }
+            }
         }
         try {
             sc = new Scanner(new File(this.filename));
@@ -45,11 +84,6 @@ public class TextParser implements AirlineParser {
         assert sc != null;
         while (sc.hasNextLine()) {
             lines.add(sc.nextLine());
-        }
-        //Checks if the airline name in the file is similar to that in the command line or not
-        if(!this.airlinename.equals(lines.get(0))){
-            System.err.println("The airline name is different than in the file");
-            System.exit(1);
         }
 
         Airline airline = new Airline();
@@ -74,8 +108,16 @@ public class TextParser implements AirlineParser {
             flight.setArrive(words[10], words[11]);
             airline.addFlight(flight);
         }
+
+        //Checks if the airline name in the file is similar to that in the command line or not
+        if(!this.airlinename.equals(lines.get(0))){
+            System.err.println("The airline name is different than in the file");
+            System.exit(1);
+        }
+
         return airline;
     }
+
     public static void checkFlightnum(String number) {
         int num = 0;
         try {

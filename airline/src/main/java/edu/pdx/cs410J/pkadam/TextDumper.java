@@ -21,7 +21,7 @@ public class TextDumper implements AirlineDumper {
         out.write("");
         out.write(abstractAirline.getName());
         for(int i=0; i < arrli.size(); i++){
-            flights[i] = arrli.get(0).toString();
+            flights[i] = arrli.get(i).toString();
             out.write("\n");
             out.write(flights[i]);
         }
