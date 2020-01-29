@@ -44,7 +44,7 @@ public class Airline extends AbstractAirline {
      * @return This returns a list of flights that have been added to the airline
      */
     @Override
-    public Collection getFlights() {
+    public ArrayList<Flight> getFlights() {
         return arrli;
     }
 }
