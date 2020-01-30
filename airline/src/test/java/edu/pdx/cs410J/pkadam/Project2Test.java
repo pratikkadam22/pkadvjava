@@ -121,16 +121,16 @@ public class Project2Test extends InvokeMainTestCase {
 
     @Test
     public void testinvalidtimeinfile(){
-        File file = new File("invalidtime.txt");
-        MainMethodResult result = invokeMain(new String[] {"-textFile", "invalidtime.txt", "emirates", "123", "pdx", "03/03/2017", "12:00", "dbo", "09/09/2017", "16:00"});
+        File file = new File("src/test/resources/edu/pdx/cs410J/pkadam/invalidtime.txt");
+        MainMethodResult result = invokeMain(new String[] {"-textFile", "src/test/resources/edu/pdx/cs410J/pkadam/invalidtime.txt", "emirates", "123", "pdx", "03/03/2017", "12:00", "dbo", "09/09/2017", "16:00"});
         assertThat(result.getExitCode(), equalTo(1));
         assertThat(result.getTextWrittenToStandardError(), containsString("Invalid time format in the text file!"));
     }
 
     @Test
     public void testinvalidformatinfile(){
-        File file = new File("invalidformat.txt");
-        MainMethodResult result = invokeMain(new String[] {"-textFile", "invalidformat.txt", "emirates", "123", "pdx", "03/03/2017", "12:00", "dbo", "09/09/2017", "16:00"});
+        File file = new File("src/test/resources/edu/pdx/cs410J/pkadam/invalidformat.txt");
+        MainMethodResult result = invokeMain(new String[] {"-textFile", "src/test/resources/edu/pdx/cs410J/pkadam/invalidformat.txt", "emirates", "123", "pdx", "03/03/2017", "12:00", "dbo", "09/09/2017", "16:00"});
         assertThat(result.getExitCode(), equalTo(1));
         assertThat(result.getTextWrittenToStandardError(), containsString("The text file is not formatted properly."));
     }
