@@ -1,15 +1,27 @@
 package edu.pdx.cs410J.pkadam;
 
 import edu.pdx.cs410J.AbstractFlight;
+import edu.pdx.cs410J.AirportNames;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import java.util.Locale;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
  * This class extends the AbstractFlight superclass and implement all its methods
  */
-public class Flight extends AbstractFlight {
+public class Flight extends AbstractFlight implements Comparable<Flight>{
+    SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
+    Map names = AirportNames.getNamesMap();
     int flightnum;
-    String src, dst, dprt, arrv;
+    String src, dst;
+    Date dprt, arrv;
 
     /**
      * This method sets the flightnumber for the Flight
@@ -41,47 +53,28 @@ public class Flight extends AbstractFlight {
      * @param source the three letter code of the source of flight
      */
   public void setSrc(String source) {
-      String codex = "[a-zA-Z]{3}";
-      Pattern pattern = Pattern.compile(codex);
-      Matcher matcher = pattern.matcher(source);
-      if (matcher.matches()) {
-          this.src = source;
-      }
-      else {
-          System.err.println("Please check the code for the Source!");
+      String sourceuppercase = source.toUpperCase();
+      if(!names.containsKey(sourceuppercase)){
+          System.err.println("The three-letter code for the source is invalid");
           System.exit(1);
       }
-  }
-
-    /**
-     * This method is used to verify whether the date and time are in the correct format.
-     * @param date the arrival or departure date of the flight in the form of a string
-     * @param time the arrival or departure time of the flight in the form of a string
-     * @return This returns boolean True if date and time are correct and returns boolean False if format is wrong
-     */
-  public boolean datetimevalidator(String date, String time) {
-      String dateregex = "^(1[0-2]|0[1-9]|[1-9])/(3[01]|[12][0-9]|0[1-9]|[1-9])/[0-9]{4}$";
-      Pattern pattern1 = Pattern.compile(dateregex);
-      Matcher matcher1 = pattern1.matcher(date);
-      String timeregex = "^([01]?[0-9]|2[0-3]):[0-5][0-9]$";
-      Pattern pattern2 = Pattern.compile(timeregex);
-      Matcher matcher2 = pattern2.matcher(time);
-      return (matcher1.matches() && matcher2.matches());
+      this.src = source;
   }
 
     /**
      * This method sets the departure date and time of a flight from the source
      * @param date The date when the flight departs
      * @param time The date when the flight arrives
+     * @param ampm The time of the day (am or pm)
      */
-  public void setDepart(String date, String time) {
-      boolean bool = datetimevalidator(date, time);
-      if(bool) {
-        String depart = date + " " + time;
-        this.dprt = depart;
-      } else {
-          System.err.println("Please verify the format for departing date and time: MM/DD/YYY HH:MM");
-        System.exit(1);
+  public void setDepart(String date, String time, String ampm) {
+      String finaldatetime = date + " " + time + " " + ampm;
+      try{
+          this.dprt = formatter.parse(finaldatetime);
+      }
+      catch (ParseException e){
+          System.err.println("Please verify the format for departing date and time");
+          System.exit(1);
       }
   }
 
@@ -90,6 +83,11 @@ public class Flight extends AbstractFlight {
      * @param dest The three letter code of the destination of the flight
      */
   public void setDest(String dest) {
+      String destuppercase = dest.toUpperCase();
+      if(!names.containsKey(destuppercase)){
+          System.err.println("The three-letter code for the source is invalid");
+          System.exit(1);
+      }
       String codex = "[a-zA-Z]{3}";
       Pattern pattern = Pattern.compile(codex);
       Matcher matcher = pattern.matcher(dest);
@@ -106,14 +104,25 @@ public class Flight extends AbstractFlight {
      * This method sets the arrival date and time of a flight at the destination
      * @param date The date when the flight arrives
      * @param time The time when the flight arrives
+     * @param ampm The time of the day (am or pm)
      */
-  public void setArrive(String date, String time) {
-      boolean bool = datetimevalidator(date, time);
-      if(bool) {
-          String arrival = date + " " + time;
-          this.arrv = arrival;
-      } else {
-          System.err.println("Please verify the format for arrival date and time: MM/DD/YYY HH:MM");
+  public void setArrive(String date, String time, String ampm) {
+      String finaldatetime = date + " " + time + " " + ampm;
+      try{
+          this.arrv = formatter.parse(finaldatetime);
+      }
+      catch (ParseException e){
+          System.err.println("Please verify the format for arriving date and time");
+          System.exit(1);
+      }
+  }
+
+    /**
+     * This method ensures that the departure time is before arrival time
+     */
+  public void checkdeparturebeforearrival(){
+      if(this.dprt.compareTo(this.arrv) > 0){
+          System.err.println("The flight's arrival time is before its departure time.");
           System.exit(1);
       }
   }
@@ -143,8 +152,10 @@ public class Flight extends AbstractFlight {
      */
   @Override
   public String getDepartureString() {
-    return this.dprt;
-    //throw new UnsupportedOperationException("This method is not implemented yet");
+      SimpleDateFormat dater = new SimpleDateFormat("MM/dd/yyyy");
+      String datestring = dater.format(this.dprt);
+      String timestring = formatter.getTimeInstance(DateFormat.SHORT).format(this.dprt);
+      return datestring + " " + timestring;
   }
 
     /**
@@ -163,7 +174,49 @@ public class Flight extends AbstractFlight {
      */
   @Override
   public String getArrivalString() {
-    return this.arrv;
-    //throw new UnsupportedOperationException("This method is not implemented yet");
+      SimpleDateFormat dater = new SimpleDateFormat("MM/dd/yyyy");
+      String datestring = dater.format(this.arrv);
+      String timestring = formatter.getTimeInstance(DateFormat.SHORT).format(this.arrv);
+      return datestring + " " + timestring;
   }
+
+    /**
+     * This method return the arrival date and time of a flight
+     * @return the arrival date in the form of a Date object
+     */
+    @Override
+    public Date getArrival() {
+        return this.arrv;
+    }
+
+    /**
+     * This method return the departure date and time of a flight
+     * @return the departure date in the form of a Date object
+     */
+    @Override
+    public Date getDeparture() {
+        return this.dprt;
+    }
+
+    /**
+     * This method compares the current object to the specified object.
+     * This method is used mainly to sort the flights by their source. If the source is same, it sorts by departure time.
+     * @param o the Flight object to compare the current object to
+     * @return it returns a positive integer if current object is greater than specified object,
+                it returns a negative integer if current object is lesser than specified object,
+                it returns 0 integer if current object is equal to specified object
+     */
+    public int compareTo(Flight o) {
+      if(this.getSource().compareToIgnoreCase(o.getSource()) == 0){
+          try {
+              Date d1 = formatter.parse(this.getDepartureString());
+              Date d2 = formatter.parse(o.getDepartureString());
+              return d1.compareTo(d2);
+          } catch (ParseException e) {
+              e.printStackTrace();
+              System.exit(1);
+          }
+      }
+        return this.getSource().compareToIgnoreCase(o.getSource());
+    }
 }

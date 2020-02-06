@@ -18,11 +18,11 @@ public class FlightTest {
   public void getArrivalStringNeedsToBeImplemented() {
     Flight flight = new Flight();
     flight.setFlightnum("42");
-    flight.setSrc("mum");
-    flight.setDepart("10/23/2012", "12:23");
-    flight.setDest("pdx");
-    flight.setArrive("12/23/2014","23:24");
-    assertThat(flight.getArrivalString(), equalTo("12/23/2014 23:24"));
+    flight.setSrc("iah");
+    flight.setDepart("10/23/2012", "12:23", "am");
+    flight.setDest("iad");
+    flight.setArrive("12/23/2014","2:24", "pm");
+    assertThat(flight.getArrivalString(), equalTo("12/23/2014 2:24 pm"));
   }
 
   @Test
@@ -35,22 +35,22 @@ public class FlightTest {
   @Test
   public void sourcetest() {
     Flight flight = new Flight();
-    flight.setSrc("Mum");
-    assertThat(flight.getSource(), equalTo("Mum"));
+    flight.setSrc("iah");
+    assertThat(flight.getSource(), equalTo("iah"));
   }
 
   @Test
   public void desttest() {
     Flight flight = new Flight();
-    flight.setDest("pdx");
-    assertThat(flight.getDestination(), equalTo("pdx"));
+    flight.setDest("iad");
+    assertThat(flight.getDestination(), equalTo("iad"));
   }
 
   @Test
   public void departurestring() {
     Flight flight = new Flight();
-    flight.setDepart("03/03/2017", "12:00");
-    assertThat(flight.getDepartureString(), equalTo("03/03/2017 12:00"));
+    flight.setDepart("03/03/2017", "12:00", "pm");
+    assertThat(flight.getDepartureString(), equalTo("03/03/2017 12:00 pm"));
   }
 
   @Test

@@ -2,14 +2,15 @@ package edu.pdx.cs410J.pkadam;
 
 import edu.pdx.cs410J.AbstractAirline;
 import edu.pdx.cs410J.AirlineParser;
+import edu.pdx.cs410J.AirportNames;
 import edu.pdx.cs410J.ParserException;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Scanner;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -39,7 +40,7 @@ public class TextParser implements AirlineParser {
         try {
             sc = new Scanner(new File(this.filename));
         } catch (FileNotFoundException e) {
-            System.out.println("File with given name does not exist. File created.");
+            System.out.println("Text Dump File with given name does not exist. File created.");
             if(!this.filename.contains("/")){
                 PrintWriter out = null;
                 try {
@@ -96,27 +97,27 @@ public class TextParser implements AirlineParser {
         while (sc.hasNextLine()) {
             lines.add(sc.nextLine());
         }
-
         Airline airline = new Airline();
         airline.setName(lines.get(0));
         //This for loop checks each and every detail of every flight in the text file
         for(int i = 1; i < lines.size(); i++) {
             String[] words = lines.get(i).split(" ");
-            if(words.length != 12) {
+            if(words.length != 14) {
                 System.err.println("The text file is not formatted properly.");
                 System.exit(1);
             }
             checkFlightnum(words[1]);
             checkairportcode(words[3]);
-            checkairportcode(words[8]);
-            checkdatetime(words[5], words[6]);
-            checkdatetime(words[10], words[11]);
+            checkairportcode(words[9]);
+            checkdatetime(words[5], words[6], words[7]);
+            checkdatetime(words[11], words[12], words[13]);
             Flight flight = new Flight();
             flight.setFlightnum(words[1]);
             flight.setSrc(words[3]);
-            flight.setDepart(words[5], words[6]);
-            flight.setDest(words[8]);
-            flight.setArrive(words[10], words[11]);
+            flight.setDepart(words[5], words[6], words[7]);
+            flight.setDest(words[9]);
+            flight.setArrive(words[11], words[12], words[13]);
+            flight.checkdeparturebeforearrival();
             airline.addFlight(flight);
         }
 
@@ -158,42 +159,30 @@ public class TextParser implements AirlineParser {
      * @param source the airport code of a source or a destination
      */
     public static void checkairportcode(String source) {
-        String codex = "[a-zA-Z]{3}";
-        Pattern pattern = Pattern.compile(codex);
-        Matcher matcher = pattern.matcher(source);
-        if (matcher.matches()) {
-            return;
-        }
-        else {
-            System.err.println("Invalid airport codes in the text file!");
+        String sourceuppercase = source.toUpperCase();
+        Map names = AirportNames.getNamesMap();
+        if(!names.containsKey(sourceuppercase)){
+            System.err.println("The three-letter airport code is invalid in the text file");
             System.exit(1);
         }
+        return;
     }
 
     /**
      * This method checks whether the dates and times in the text file are correct or not
      * @param date the departure or arrival date of a flight
      * @param time the departure or arrival time of a flight
+     * @param ampm The time of the day (am or pm)
      */
-    public static void checkdatetime(String date, String time) {
-        String dateregex = "^(1[0-2]|0[1-9]|[1-9])/(3[01]|[12][0-9]|0[1-9]|[1-9])/[0-9]{4}$";
-        Pattern pattern1 = Pattern.compile(dateregex);
-        Matcher matcher1 = pattern1.matcher(date);
-        String timeregex = "^([01]?[0-9]|2[0-3]):[0-5][0-9]$";
-        Pattern pattern2 = Pattern.compile(timeregex);
-        Matcher matcher2 = pattern2.matcher(time);
-        if (matcher1.matches() && matcher2.matches()){
-            return;
+    public static void checkdatetime(String date, String time, String ampm) {
+        SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
+        String finaldatetime = date + " " + time + " " + ampm;
+        try{
+            Date d = formatter.parse(finaldatetime);
         }
-        else{
-            if (!matcher1.matches()) {
-                System.err.println("Invalid date format in the text file!");
-                System.exit(1);
-            }
-            else if (!matcher2.matches()){
-                System.err.println("Invalid time format in the text file!");
-                System.exit(1);
-            }
+        catch (ParseException e){
+            System.err.println("Please verify the format for datetime in the text file");
+            System.exit(1);
         }
     }
 }

@@ -5,6 +5,7 @@ import edu.pdx.cs410J.AbstractFlight;
 
 import java.util.Collection;
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * This class extends the AbstractAirline superclass and implement all its methods
@@ -45,6 +46,7 @@ public class Airline extends AbstractAirline {
      */
     @Override
     public ArrayList<Flight> getFlights() {
+        Collections.sort(arrli);
         return arrli;
     }
 }

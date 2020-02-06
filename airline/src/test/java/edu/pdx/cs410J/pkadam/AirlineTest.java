@@ -22,10 +22,10 @@ public class AirlineTest {
         Flight flight = new Flight();
         airline.setName("emirates");
         flight.setFlightnum("42");
-        flight.setSrc("mum");
-        flight.setDepart("10/23/2012", "12:23");
-        flight.setDest("pdx");
-        flight.setArrive("12/23/2014","23:24");
+        flight.setSrc("iah");
+        flight.setDepart("10/23/2012", "12:23", "am");
+        flight.setDest("iad");
+        flight.setArrive("12/23/2014","23:24", "pm");
         airline.addFlight(flight);
         assertThat(airline.getFlights().size(), equalTo(1));
     }

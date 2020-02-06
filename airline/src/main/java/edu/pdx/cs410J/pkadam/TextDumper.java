@@ -5,12 +5,10 @@ import edu.pdx.cs410J.AirlineDumper;
 
 import javax.lang.model.element.Element;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
+import java.util.*;
 
 /**
- * This is the class that implements the AirlineDumper interface
+ * This class implements the AirlineDumper interface to dump the airline in text file
  */
 public class TextDumper implements AirlineDumper {
     String filename;
@@ -23,11 +21,11 @@ public class TextDumper implements AirlineDumper {
     public void dump(AbstractAirline abstractAirline) throws IOException {
         ArrayList arrli = (ArrayList) abstractAirline.getFlights();
         String[] flights = new String[arrli.size()];
-        //String fileContent = "Hello Learner !! Welcome to howtodoinjava.com.";
         File f = new File(filename);
         PrintWriter out = new PrintWriter(filename);
         out.write("");
         out.write(abstractAirline.getName());
+        Collections.sort(arrli);
         for(int i=0; i < arrli.size(); i++){
             flights[i] = arrli.get(i).toString();
             out.write("\n");
