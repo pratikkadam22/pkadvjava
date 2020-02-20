@@ -1,16 +1,9 @@
 package edu.pdx.cs410J.pkadam;
 
-import com.sun.tools.javac.Main;
-import edu.pdx.cs410J.AbstractAirline;
 import edu.pdx.cs410J.InvokeMainTestCase;
-import edu.pdx.cs410J.ParserException;
 import org.junit.Test;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-import java.nio.file.Files;
-import java.util.Scanner;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -18,15 +11,15 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.*;
 
 /**
- * Unit tests for the {@link Project3} main class.
+ * Unit tests for the {@link Project4} main class.
  */
-public class Project3Test extends InvokeMainTestCase {
+public class Project4Test extends InvokeMainTestCase {
 
     /**
-     * Invokes the main method of {@link Project3} with the given arguments.
+     * Invokes the main method of {@link Project4} with the given arguments.
      */
     private MainMethodResult invokeMain(String... args) {
-        return invokeMain( Project3.class, args );
+        return invokeMain( Project4.class, args );
     }
 
     /**
@@ -50,7 +43,7 @@ public class Project3Test extends InvokeMainTestCase {
     public void testprint() {
         MainMethodResult result = invokeMain(new String[] {"-print", "emirates", "123", "iah", "03/03/2017", "12:00", "am", "iad", "03/03/2017", "4:00", "pm"});
         assertThat(result.getExitCode(), equalTo(0));
-        assertThat(result.getTextWrittenToStandardOut(), containsString("Flight 123 departs iah at 03/03/2017 12:00 AM arrives iad at 03/03/2017 4:00 PM"));
+        assertThat(result.getTextWrittenToStandardOut(), containsString("Flight 123 departs iah at 03/03/2017 12:00 am arrives iad at 03/03/2017 4:00 pm"));
     }
 
     @Test
@@ -125,13 +118,12 @@ public class Project3Test extends InvokeMainTestCase {
             file.delete();
             MainMethodResult result = invokeMain(new String[] {"-textFile", "pratikk.txt", "-print", "emirates", "123", "iah", "03/03/2017", "12:00", "am", "iad", "03/03/2017", "4:00", "pm"});
             assertThat(result.getExitCode(), equalTo(0));
-            assertThat(result.getTextWrittenToStandardOut(), containsString("Flight 123 departs iah at 03/03/2017 12:00 AM arrives iad at 03/03/2017 4:00 PM"));
             assertTrue(file.exists());
         }
         else {
             MainMethodResult result = invokeMain(new String[]{"-textFile", "pratikk.txt", "-print", "emirates", "123", "iah", "03/03/2017", "12:00", "am", "iad", "03/03/2017", "4:00", "pm"});
             assertThat(result.getExitCode(), equalTo(0));
-            assertThat(result.getTextWrittenToStandardOut(), containsString("Flight 123 departs iah at 03/03/2017 12:00 AM arrives iad at 03/03/2017 4:00 PM"));
+            assertThat(result.getTextWrittenToStandardOut(), containsString("Flight 123 departs iah at 03/03/2017 12:00 am arrives iad at 03/03/2017 4:00 pm"));
             assertTrue(file.exists());
         }
     }

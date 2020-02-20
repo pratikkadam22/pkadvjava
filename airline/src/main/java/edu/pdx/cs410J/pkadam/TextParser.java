@@ -98,6 +98,10 @@ public class TextParser implements AirlineParser {
             lines.add(sc.nextLine());
         }
         Airline airline = new Airline();
+        if(lines.size() == 0){
+            System.err.println("The textfile is empty!");
+            System.exit(1);
+        }
         airline.setName(lines.get(0));
         //This for loop checks each and every detail of every flight in the text file
         for(int i = 1; i < lines.size(); i++) {
@@ -117,8 +121,13 @@ public class TextParser implements AirlineParser {
             flight.setDepart(words[5], words[6], words[7]);
             flight.setDest(words[9]);
             flight.setArrive(words[11], words[12], words[13]);
-            flight.checkdeparturebeforearrival();
-            airline.addFlight(flight);
+            if(flight.checkdeparturebeforearrival()){
+                airline.addFlight(flight);
+            }
+            else{
+                System.err.println("The flight's arrival time is before its departure time in the text file");
+                System.exit(1);
+            }
         }
 
         //Checks if the airline name in the file is similar to that in the command line or not

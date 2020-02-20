@@ -120,10 +120,12 @@ public class Flight extends AbstractFlight implements Comparable<Flight>{
     /**
      * This method ensures that the departure time is before arrival time
      */
-  public void checkdeparturebeforearrival(){
+  public boolean checkdeparturebeforearrival(){
       if(this.dprt.compareTo(this.arrv) > 0){
-          System.err.println("The flight's arrival time is before its departure time.");
-          System.exit(1);
+          return false;
+      }
+      else{
+          return true;
       }
   }
 
