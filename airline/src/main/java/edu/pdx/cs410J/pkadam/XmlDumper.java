@@ -49,11 +49,11 @@ public class XmlDumper implements AirlineDumper {
         this.airline = (Airline) airline;
         List<Flight> flightsList = (List<Flight>) airline.getFlights();
         try {
-            File filexml = new File(xmlFileName);
-            if(filexml.exists() && filexml.length() == 0){
-                System.err.println("XML file already exists and is empty!");
-                System.exit(1);
-            }
+//            File filexml = new File(xmlFileName);
+//            if(filexml.exists() && filexml.length() == 0){
+//                System.err.println("XML file already exists and is empty!");
+//                System.exit(1);
+//            }
             AirlineXmlHelper helper = new AirlineXmlHelper();
 
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
