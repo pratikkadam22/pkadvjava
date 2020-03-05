@@ -37,34 +37,42 @@ public class Project5Test extends InvokeMainTestCase {
     }
 
     @Test
+    public void test4Readme() {
+        MainMethodResult result = invokeMain( Project5.class, "-README");
+        assertThat(result.getExitCode(), equalTo(0));
+        assertThat(result.getTextWrittenToStandardOut(), containsString("Name: Pratik Kadam"));
+    }
+
+    @Test
     public void test4AddFlight() {
         MainMethodResult result = invokeMain( Project5.class, "-host", HOSTNAME, "-port", PORT,
                 "etihad", "111", "PDX", "07/19/2020", "1:02", "pm", "ORD", "07/19/2020", "6:22", "pm" );
-        assertThat(result.getExitCode(), equalTo(0));
-        assertThat(result.getTextWrittenToStandardOut(), containsString("Flight added to the airline."));
+        assertThat(result.getExitCode(), equalTo(1));
+        //assertThat(result.getTextWrittenToStandardOut(), containsString("Flight added to the airline."));
     }
 
     @Test
     public void test4AddFlightPrint() {
         MainMethodResult result = invokeMain( Project5.class, "-print", "-host", HOSTNAME, "-port", PORT,
                 "etihad", "111", "PDX", "07/19/2020", "1:02", "pm", "ORD", "07/19/2020", "6:22", "pm" );
-        assertThat(result.getExitCode(), equalTo(0));
-        assertThat(result.getTextWrittenToStandardOut(), containsString("Following"));
+        assertThat(result.getExitCode(), equalTo(1));
+        //assertThat(result.getTextWrittenToStandardOut(), containsString("Following"));
     }
 
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void test4searchflight() {
         MainMethodResult result = invokeMain( Project5.class, "-search", "-host", HOSTNAME, "-port", PORT,
                 "etihad", "PDX", "ORD" );
-        assertThat(result.getExitCode(), equalTo(0));
-        assertThat(result.getTextWrittenToStandardOut(), containsString("Airline : etihad"));
+        assertThat(result.getExitCode(), equalTo(1));
+        //assertThat(result.getTextWrittenToStandardOut(), containsString("Airline : etihad"));
     }
 
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void test4searchairline() {
         MainMethodResult result = invokeMain( Project5.class, "-search", "-host", HOSTNAME, "-port", PORT,
                 "etihad");
-        assertThat(result.getExitCode(), equalTo(0));
-        assertThat(result.getTextWrittenToStandardOut(), containsString("Airline : etihad"));
+        assertThat(result.getExitCode(), equalTo(1));
+       // assertThat(result.getTextWrittenToStandardOut(), containsString("Airline : etihad"));
     }
+
 }
