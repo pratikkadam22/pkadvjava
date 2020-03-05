@@ -10,7 +10,7 @@
   <artifactId>airline-web</artifactId>
 
   <properties>
-    <jetty.http.port>8080</jetty.http.port>
+    <jetty.http.port>80</jetty.http.port>
   </properties>
 
   <packaging>war</packaging>
