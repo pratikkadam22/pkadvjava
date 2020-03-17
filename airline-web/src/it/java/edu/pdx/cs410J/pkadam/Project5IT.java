@@ -1,7 +1,6 @@
 package edu.pdx.cs410J.pkadam;
 
 import edu.pdx.cs410J.InvokeMainTestCase;
-import edu.pdx.cs410J.pkadam.AirlineRestClient.AirlineRestException;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
@@ -19,7 +18,7 @@ import static org.hamcrest.Matchers.equalTo;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class Project5IT extends InvokeMainTestCase {
     private static final String HOSTNAME = "localhost";
-    private static final String PORT = System.getProperty("http.port", "80");
+    private static final String PORT = System.getProperty("http.port", "8080");
 
     @Test
     public void test1NoCommandLineArguments() {

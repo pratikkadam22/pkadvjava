@@ -22,7 +22,7 @@ public class FlightTest {
         flight.setDepart("10/23/2012", "12:23", "am");
         flight.setDest("iad");
         flight.setArrive("12/23/2014","2:24", "pm");
-        assertThat(flight.getArrivalString(), equalTo("12/23/2014 2:24 pm"));
+        assertThat(flight.getArrivalString(), equalTo("12/23/2014 2:24 PM"));
     }
 
     @Test
@@ -50,7 +50,7 @@ public class FlightTest {
     public void departurestring() {
         Flight flight = new Flight();
         flight.setDepart("03/03/2017", "12:00", "pm");
-        assertThat(flight.getDepartureString(), equalTo("03/03/2017 12:00 pm"));
+        assertThat(flight.getDepartureString(), equalTo("03/03/2017 12:00 PM"));
     }
 
     @Test
@@ -60,3 +60,4 @@ public class FlightTest {
     }
 
 }
+

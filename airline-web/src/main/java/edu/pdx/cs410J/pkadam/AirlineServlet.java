@@ -1,6 +1,7 @@
 package edu.pdx.cs410J.pkadam;
 
 import com.google.common.annotations.VisibleForTesting;
+import edu.pdx.cs410J.AirportNames;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -11,6 +12,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * This servlet ultimately provides a REST API for working with an
@@ -18,6 +20,7 @@ import java.util.ArrayList;
  */
 public class AirlineServlet extends HttpServlet {
    private ArrayList<Airline> airlinelist = new ArrayList<Airline>();
+    Map names = AirportNames.getNamesMap();
 
     /**
    * Handles an HTTP GET request from a client by writing the airlines from
@@ -30,19 +33,28 @@ public class AirlineServlet extends HttpServlet {
   {
       response.setContentType( "text/plain" );
 
-      String airlineName = getParameter( "name", request );
+      String airlineName = getParameter( "airline", request );
       if (airlineName == null) {
-          missingRequiredParameter(response, "name");
+          missingRequiredParameter(response, "airline");
           return;
       }
 
       String source = getParameter( "src", request );
+      if (source != null) {
+          String sourceuppercase = source.toUpperCase();
+          if(!names.containsKey(sourceuppercase)){
+              response.sendError(HttpServletResponse.SC_BAD_REQUEST, "The three-letter code for the source is invalid");
+          }
+      }
 
       String destination = getParameter( "dest", request );
-
-      if(airlinelist.size() == 0){
-          noairlinefound(airlineName, response);
+      if (destination != null){
+          String destuppercase = destination.toUpperCase();
+          if(!names.containsKey(destuppercase)){
+              response.sendError(HttpServletResponse.SC_BAD_REQUEST, "The three-letter code for the destination is invalid");
+          }
       }
+
       Airline getairline = null;
       for (Airline airline : airlinelist) {
           if (airline.getName().equals(airlineName)) {
@@ -204,3 +216,4 @@ public class AirlineServlet extends HttpServlet {
     }
   }
 }
+

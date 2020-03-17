@@ -30,3 +30,4 @@ public class AirlineTest {
         assertThat(airline.getFlights().size(), equalTo(1));
     }
 }
+

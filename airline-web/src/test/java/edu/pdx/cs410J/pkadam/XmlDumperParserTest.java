@@ -55,3 +55,4 @@ public class XmlDumperParserTest
         assertThat(parsedairline.getName(), equalTo("emirates"));
     }
 }
+
