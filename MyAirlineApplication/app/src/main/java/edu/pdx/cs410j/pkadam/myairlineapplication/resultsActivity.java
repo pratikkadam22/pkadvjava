@@ -10,11 +10,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-
-import com.google.android.material.snackbar.Snackbar;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -29,33 +26,43 @@ public class resultsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_results);
         File dir = getFilesDir();
-        Intent intent=getIntent();
+        Intent intent = getIntent();
         aname = intent.getStringExtra("airlinename");
         String source = intent.getStringExtra("source");
         String dest = intent.getStringExtra("destination");
 
         ListView listView = findViewById(R.id.resultsview);
         ArrayAdapter<Flight> adapter = new FlightAdapter(this);
+        ArrayAdapter<String> adapter2 = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item);
         TextParser parser = new TextParser(dir, aname + ".txt", aname);
-        Airline parsedairline  = null;
+        Airline parsedairline = null;
         try {
             parsedairline = (Airline) parser.parse();
         } catch (ParserException e) {
             e.printStackTrace();
         }
         ArrayList<Flight> arrli = parsedairline.getFlights();
+        ArrayList<Flight> temp = new ArrayList<>();
+
         if (source.equals("") && dest.equals("")) {
-            for(Flight f: arrli) {
+            for (Flight f : arrli) {
                 adapter.add(f);
+                temp.add(f);
             }
         } else {
             for (Flight flight : arrli) {
                 if (flight.getSource().equals(source) && flight.getDestination().equals(dest)) {
                     adapter.add(flight);
+                    temp.add(flight);
                 }
             }
         }
-        listView.setAdapter(adapter);
+        if (temp.size() == 0) {
+            adapter2.add("No flights found!");
+            listView.setAdapter(adapter2);
+        } else {
+            listView.setAdapter(adapter);
+        }
     }
 
     class FlightAdapter extends ArrayAdapter<Flight> {
