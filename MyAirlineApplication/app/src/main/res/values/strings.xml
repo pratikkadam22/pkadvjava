@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">MyAirlineApplication</string>
+    <string name="hello_pratik">Welcome to Pratik\'s Airline Application</string>
+    <string name="help">HELP</string>
+    <string name="readme">README for Project 6\nName: Pratik Kadam\nProject 6 : An Android Airline Application\n
+    This project will deploy my Airline application as an Android app\nThe Airline class extends AbstractAirline and the Flight class extends AbstractFlight
+    \nAirline class - it has a name and consists of multiple flights\n
+        Flight class - it consists of details like flightnumber, source, departure time, destination, arrival time\n
+        PrettyPrinter class - it prints the list of flights in an airline in a pretty way
+    </string>
+    <string name="addflight">Add Flight</string>
+    <string name="addflightdetails">Enter the Flight details</string>
+    <string name="searchflights">Search Flights</string>
+    <string name="searchpage">Search page</string>
+    <string name="airline_name_entry">Airline name</string>
+    <string name="fligthnum_entry">Flight Number</string>
+    <string name="source_entry">Source</string>
+    <string name="depart_entry">Depart (MM/DD/YYY hh:mm a)</string>
+    <string name="arrv_entry">Arrival (MM/DD/YYY hh:mm a)</string>
+    <string name="dest_entry">Destination</string>
+    <string name="searchflightdetails">Enter the search parameters</string>
+    <string name="results_title">RESULTS</string>
+    <string name="launchdelete">Delete Airline</string>
+    <string name="deleteairlinetitle">Enter name of airline to Delete</string>
+    <string name="deletebutton">Delete</string>
+</resources>
