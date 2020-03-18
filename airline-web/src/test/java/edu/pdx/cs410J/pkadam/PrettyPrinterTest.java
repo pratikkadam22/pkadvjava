@@ -34,3 +34,4 @@ public class PrettyPrinterTest
         prettyPrinter.dump(airline);
     }
 }
+

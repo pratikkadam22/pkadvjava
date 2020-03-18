@@ -61,7 +61,7 @@ public class AirlineServletTest {
 
   private HttpServletResponse makeGETRequestOfServlet(HttpVerb verb, AirlineServlet servlet, String airlineName, String src, String dest) throws IOException, ServletException {
     HttpServletRequest request = mock(HttpServletRequest.class);
-    when(request.getParameter("name")).thenReturn(airlineName);
+    when(request.getParameter("airline")).thenReturn(airlineName);
     when(request.getParameter("src")).thenReturn(src);
     when(request.getParameter("dest")).thenReturn(dest);
 
@@ -87,3 +87,4 @@ public class AirlineServletTest {
     POST, GET;
   }
 }
+

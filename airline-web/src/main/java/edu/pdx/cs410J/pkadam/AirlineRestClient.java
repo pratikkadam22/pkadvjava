@@ -64,10 +64,16 @@ public class AirlineRestClient extends HttpRequestHelper
      * @return the flights between given source and destination in the form of a string
      */
   public String getFlightsBetween(String airlineName, String source, String destination) throws Exception {
-    Response response = getFromMyURL(Map.of("name", airlineName, "src", source, "dest", destination));
+    Response response = getFromMyURL(Map.of("airline", airlineName, "src", source, "dest", destination));
+    if(response.getContent().contains("invalid")){
+      System.err.println(response.getContent());
+      return "Airport code is invalid";
+      //System.exit(1);
+    }
     if(response.getContent().contains("does not exist")){
       System.err.println(response.getContent());
-      System.exit(1);
+	return "Airline does not exist";
+    //  System.exit(1);
     }
     throwExceptionIfNotOkayHttpStatus(response);
     XmlParser parser = new XmlParser(loadXMLFromString(response.getContent()), airlineName);
@@ -91,7 +97,12 @@ public class AirlineRestClient extends HttpRequestHelper
    * @return The flights of the given airline in the form of a string
    */
   public String getAllFlights(String airlineName) throws Exception {
-    Response response = getFromMyURL(Map.of("name", airlineName));
+    Response response = getFromMyURL(Map.of("airline", airlineName));
+    if(response.getContent().contains("does not exist")){
+      System.err.println(response.getContent());
+      return "Airline does not exist";
+  //    System.exit(1);
+    }
     throwExceptionIfNotOkayHttpStatus(response);
     XmlParser parser = new XmlParser(loadXMLFromString(response.getContent()), airlineName);
     Airline parsedairline = parser.parse();
@@ -142,7 +153,7 @@ public class AirlineRestClient extends HttpRequestHelper
     }
     catch (Exception e){
       System.err.println("Please check the connection parameters for the client");
-      System.exit(1);
+//      System.exit(1);
     }
     return null;
   }
@@ -155,7 +166,7 @@ public class AirlineRestClient extends HttpRequestHelper
   private Response throwExceptionIfNotOkayHttpStatus(Response response) {
     int code = response.getCode();
     if (code != HTTP_OK) {
-      throw new AirlineRestException(code);
+  //    throw new AirlineRestException(code);
     }
     return response;
   }
@@ -163,11 +174,12 @@ public class AirlineRestClient extends HttpRequestHelper
   /**
    * This method handles the runtime exception for the REST client
    */
-  @VisibleForTesting
-  static
-  class AirlineRestException extends RuntimeException {
-    AirlineRestException(int httpStatusCode) {
-      super("Got an HTTP Status Code of " + httpStatusCode);
-    }
-  }
+  //@VisibleForTesting
+ // static
+ // class AirlineRestException extends RuntimeException {
+  //  AirlineRestException(int httpStatusCode) {
+   //   super("Got an HTTP Status Code of " + httpStatusCode);
+    //}
+ // }
 }
+
